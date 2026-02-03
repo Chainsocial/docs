@@ -1,0 +1,74 @@
+# Core Systems
+
+This section summarizes the core on-chain systems that power identity, content, and social interactions in ChainSocial.
+
+## Identity
+
+**UsernameSystem**
+- Initializes username fee config with base fee, decay period, minimum fee, and renewal period.
+- Supports claiming, renewing, and releasing usernames.
+- Reserved usernames are protected and can only be managed by the namespace owner.
+- Fees are paid to the World and can be withdrawn by the namespace owner.
+
+**ProfileSystem**
+- Creates and maintains user profiles.
+- Stores profile fields as content references (e.g., `bio`, `displayName`, `avatarUrl`).
+- Supports inline text updates with a **4KB max** per field to prevent oversized payloads.
+- Provides `OnBehalfOf` variants for delegated updates.
+
+## Content
+
+**ContentSystem**
+- Creates content references with three storage options:
+  - Inline on-chain text
+  - IPFS CID references
+  - URL references
+- Content is stored with metadata (type, mime, size, hash).
+
+## Social Graph
+
+**FollowSystem**
+- Follow/unfollow with batch support (max batch size: 50).
+- Prevents following zero address, self, or blocked users.
+- Updates follower/following counts.
+
+**ReactionSystem**
+- Add/remove reactions to posts.
+- `LIKE` reactions update the post’s like count.
+- Batch reactions supported (max batch size: 50).
+
+**BlockSystem**
+- Block/unblock other users.
+- Blocked relationships are enforced across follows and DMs.
+
+## Messaging
+
+**DirectMessageSystem**
+- Sends messages that reference content entries.
+- Includes `sendInlineMessage` for 4KB inline text.
+- Maintains conversation indexing with a timestamp + sequence key to avoid collisions.
+- Supports delegated sending and read receipts.
+
+## Notifications
+
+**NotificationSystem**
+- Creates notifications for social activity.
+- Supports user preferences and unread counts.
+- Uses per-user indexing to prevent collisions when multiple notifications share the same timestamp.
+
+## Moderation
+
+**ModerationSystem**
+- Users can report posts, users, or messages.
+- Moderators (appointed by namespace owner) resolve reports.
+- Users can hide/unhide content from their own feeds.
+
+## Indexing & Versioning
+
+**IndexSystem**
+- Indexes posts by author.
+- Indexes hashtags and tracks usage stats.
+
+**VersionSystem**
+- Stores a protocol version string and packed version.
+- Enforces monotonic version upgrades by the namespace owner.

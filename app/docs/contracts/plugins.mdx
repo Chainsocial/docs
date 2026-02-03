@@ -1,0 +1,20 @@
+# Plugins
+
+ChainSocial includes a first-class on-chain plugin system for extensibility.
+
+## PluginRegistrySystem
+
+- Registers plugins with metadata (name, description, version, icon hash, category).
+- Emits registration and update events.
+
+## PluginInstallSystem
+
+- Users can install/uninstall plugins.
+- Explicit consent is required before a plugin is allowed to act on a user’s behalf.
+- Tracks installs, active users, and reviews.
+
+## PluginAdminSystem
+
+- Plugin authors declare permissions and dependencies.
+- Authors can register hooks and enable/disable them.
+- Moderators can verify or deactivate plugins.

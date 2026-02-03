@@ -1,0 +1,63 @@
+import { Steps, Tabs } from 'nextra/components'
+
+# Getting Started
+
+## Install the SDK
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tabs.Tab>
+
+```bash
+pnpm add @chainsocial/sdk
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```bash
+npm install @chainsocial/sdk
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```bash
+yarn add @chainsocial/sdk
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+## Quick Setup
+
+<Steps>
+
+### Create a client
+
+```ts
+import { createClient } from '@chainsocial/sdk'
+
+export const client = createClient({
+  apiKey: process.env.CHAINSOCIAL_API_KEY
+})
+```
+
+### Publish your first post
+
+```ts
+await client.posts.create({
+  content: 'Hello ChainSocial!',
+  tags: ['intro']
+})
+```
+
+### Read a timeline
+
+```ts
+const timeline = await client.timeline.list({
+  handle: '@mia',
+  limit: 20
+})
+```
+
+</Steps>

@@ -1,0 +1,43 @@
+import { Callout } from 'nextra/components'
+
+# Delegation & Signed Ops
+
+ChainSocial supports delegated actions and gasless signatures using EIP-712 typed data.
+
+## DelegationSystem
+
+- Users can delegate specific permissions to another address.
+- Permissions are granular:
+  - `0` post
+  - `1` update profile
+  - `2` send DMs
+  - `3` follow/unfollow
+- Delegations include a `validUntil` timestamp and are capped at **365 days**.
+- Delegations can be created on-chain or registered from an EIP-712 signature.
+- `isDelegateAuthorized` is used across systems to enforce on-behalf-of calls.
+
+<Callout type="info">
+  Many systems include `OnBehalfOf` variants so ephemeral wallets or relayers can act for users with explicit permission.
+</Callout>
+
+## SignedOpsCore
+
+- Provides the EIP-712 domain separator for the World.
+- Adds a namespace-owner pause switch for signed operations.
+
+## Signed Content Ops
+
+`SignedContentOps` executes signed operations for:
+- Create/Edit/Delete posts
+- Create replies/quotes
+- Add/Remove reactions
+- Send DMs
+- Inline post creation with text hash verification
+
+## Signed Social Ops
+
+`SignedSocialOps` executes signed follow/unfollow and block/unblock operations.
+
+## Signed Delegation Ops
+
+`SignedDelegationOps` executes signed delegation creation/revocation and profile updates using typed data signatures.

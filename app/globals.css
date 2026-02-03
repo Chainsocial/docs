@@ -1,0 +1,9 @@
+:root {
+  --nextra-primary-hue: 190;
+  --nextra-primary-saturation: 90%;
+}
+
+body {
+  background: radial-gradient(circle at top, rgba(14, 116, 144, 0.12), transparent 55%),
+    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.08), transparent 45%);
+}

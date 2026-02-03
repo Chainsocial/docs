@@ -1,0 +1,39 @@
+import { Cards, Card, Callout } from 'nextra/components'
+
+# Smart Contracts
+
+ChainSocial smart contracts are designed as modular building blocks for identity, content, and social interactions. The protocol uses a MUD World + Systems + Tables architecture so data is cleanly separated from logic and every feature can evolve independently.
+
+<Callout type="info">
+  Vision: Ship social experiences that are portable, composable, and developer-first. The contracts provide reliable primitives for identity, content, and relationships while leaving room for product creativity on top.
+</Callout>
+
+## Architecture at a Glance
+
+- **World + namespace**: Systems are registered under the `chainsocial` namespace and invoked via the World interface.
+- **Systems**: Stateless logic modules that mutate tables and emit events.
+- **Tables**: Typed on-chain storage for profiles, posts, follows, notifications, and more.
+- **Cross-system calls**: Systems call each other through `IWorld` to preserve `_msgSender()`.
+
+## What’s Covered
+
+<Cards>
+  <Card title="Core Systems" href="/docs/contracts/core-systems">
+    Identity, content, social graph, messaging, notifications, moderation, and indexing.
+  </Card>
+  <Card title="Posts & Fees" href="/docs/contracts/posts-and-fees">
+    Post creation flows, inline content, attachments, batch ops, and fee configuration.
+  </Card>
+  <Card title="Delegation & Signed Ops" href="/docs/contracts/delegation-and-signed">
+    EIP-712 signatures, on-behalf-of actions, and pause controls.
+  </Card>
+  <Card title="Relayer & Gasless" href="/docs/contracts/relayer">
+    Relayer vaults, max-fee signing, and fixed gas pricing.
+  </Card>
+  <Card title="Plugins" href="/docs/contracts/plugins">
+    Registry, installs, consent, permissions, hooks, and verification.
+  </Card>
+  <Card title="Token" href="/docs/contracts/token">
+    ChainSocial ERC-20 token for fees.
+  </Card>
+</Cards>

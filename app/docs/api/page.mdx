@@ -1,0 +1,50 @@
+import { Tabs, Callout } from 'nextra/components'
+
+# API Reference
+
+Use these examples to understand request shapes quickly. Replace `YOUR_API_KEY` with a real key.
+
+<Callout type="info">
+  All API requests should be made over HTTPS. Base URL: `https://api.chainsocial.cc`
+</Callout>
+
+## Create a Post
+
+<Tabs items={['cURL', 'TypeScript']}>
+  <Tabs.Tab>
+
+```bash
+curl -X POST https://api.chainsocial.cc/v1/posts \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "content": "Shipping on ChainSocial",
+    "tags": ["launch", "web3"],
+    "metadata": {"client": "docs"}
+  }'
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```ts
+import { createClient } from '@chainsocial/sdk'
+
+const client = createClient({ apiKey: process.env.CHAINSOCIAL_API_KEY })
+
+await client.posts.create({
+  content: 'Shipping on ChainSocial',
+  tags: ['launch', 'web3'],
+  metadata: { client: 'docs' }
+})
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+## List Timeline Entries
+
+```bash
+curl -X GET 'https://api.chainsocial.cc/v1/timeline?handle=%40mia&limit=20' \
+  -H 'Authorization: Bearer YOUR_API_KEY'
+```

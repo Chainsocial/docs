@@ -1,0 +1,32 @@
+import { Callout } from 'nextra/components'
+
+# Relayer & Gasless
+
+Relayer systems enable gasless UX by letting users prepay fees into a vault. Relayers submit signed operations and charge a fee based on gas used.
+
+## RelayerVaultCore
+
+- Users deposit ETH into a relayer balance.
+- Withdrawals are protected by a reentrancy guard stored in a MUD table.
+- Balances live in `RelayerBalance` and ETH is held by the World contract.
+
+## RelayerFeeConfigSystem
+
+- Namespace owner controls min/max fee bounds and a fixed gas price.
+- Fixed gas price prevents fee inflation by relayers.
+
+## Relayer Executors
+
+- **RelayerContentExecutor**: posts, replies, quotes, reactions, edits, deletes.
+- **RelayerMessagingExecutor**: direct messages.
+- **RelayerSocialExecutor**: follow/unfollow and block/unblock.
+- **RelayerDelegationExecutor**: delegation create/revoke and profile updates.
+
+Each executor:
+- Verifies an EIP-712 signature (supports EOA + EIP-1271 smart wallets).
+- Enforces a signed `maxFee` against on-chain fee bounds.
+- Computes actual fee using fixed gas price and charges from the user’s relayer balance.
+
+<Callout type="info">
+  Relayer signatures bind the fee ceiling to the user, protecting them from unexpected fee inflation.
+</Callout>

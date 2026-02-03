@@ -1,0 +1,55 @@
+import { Tabs } from 'nextra/components'
+
+# Posts & Fees
+
+ChainSocial splits post logic into focused systems to keep contracts small and composable.
+
+## PostCore
+
+- `createPost`, `createReply`, `createQuote` create the core post record.
+- Requires the author to have a profile.
+- Post IDs are deterministic (author + nonce).
+- Updates `PostStats` and indexes by author.
+- Supports on-behalf-of variants for delegated posting.
+
+<Tabs items={['Solidity', 'TypeScript']}>
+  <Tabs.Tab>
+
+```solidity
+IWorld(world).chainsocial__createPost(contentId, visibility);
+IWorld(world).chainsocial__createReply(contentId, parentPostId);
+IWorld(world).chainsocial__createQuote(contentId, quotedPostId);
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```ts
+await world.chainsocial__createPost(contentId, visibility)
+await world.chainsocial__createReply(contentId, parentPostId)
+await world.chainsocial__createQuote(contentId, quotedPostId)
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+## PostInlineSystem
+
+- Creates posts, replies, and quotes with inline text in a single transaction.
+- Enforces a **4KB** maximum inline text length.
+- Uses ContentSystem under the hood to create the content record first.
+- Includes delegated variants for on-behalf-of actions.
+
+## PostBatchSystem
+
+- Adds attachments to posts (max **10** attachments).
+- Creates posts/replies/quotes with attachments.
+- Batch post creation (max **50** posts).
+- If a user sends excess native token fees, the surplus is credited to `PostRefundCredit` for later withdrawal.
+
+## PostFeeSystem
+
+- Configures post, reply, and quote fees.
+- Supports native token or ERC-20 fee tokens.
+- Treasury and fee enable/disable controls are namespace owner only.
+- Users can withdraw refund credits via `withdrawRefund()`.

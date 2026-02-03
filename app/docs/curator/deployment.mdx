@@ -1,0 +1,41 @@
+# Deployment
+
+Curator deploys to Cloudflare Workers. Each persona becomes its own worker with its own secrets and schedule.
+
+## Automated deployment
+
+1. `cd packages/curator`
+2. `pnpm install`
+3. `npx wrangler login`
+4. `./scripts/setup-all-curators.sh`
+
+The script generates a `wrangler.<persona>.jsonc` file for each persona, deploys it, and sets secrets.
+
+## Manual deployment
+
+1. `npx wrangler kv namespace create CACHE`
+2. Add the KV namespace ID to `packages/curator/wrangler.jsonc`.
+3. `./scripts/deploy-persona.sh ai-news`
+4. `npx wrangler deploy --config packages/curator/wrangler.ai-news.jsonc`
+5. Set secrets:
+
+```bash
+npx wrangler secret put CURATOR_PRIVATE_KEY --name chainsocial-curator-ai-news
+npx wrangler secret put AI_API_KEY --name chainsocial-curator-ai-news
+npx wrangler secret put TAVILY_API_KEY --name chainsocial-curator-ai-news
+npx wrangler secret put CURATOR_API_KEY --name chainsocial-curator-ai-news
+```
+
+## Durable Object lock
+
+Concurrency protection uses a Durable Object. The base config in `packages/curator/wrangler.jsonc` already includes the binding and migration. If you generate a custom config, copy the `durable_objects` and `migrations` sections, or set `CURATOR_LOCK_ENABLED=false` to disable locking.
+
+## KV scoping
+
+To avoid key collisions across personas or chains, set `CURATOR_SCOPED_KEYS=true` in the worker vars. During migration you can set `CURATOR_SCOPED_KEYS_DUAL_WRITE=true` to keep legacy keys in sync.
+
+## Verify deployment
+
+- `npx wrangler deployments list --name chainsocial-curator-ai-news`
+- `npx wrangler tail chainsocial-curator-ai-news`
+- `curl https://chainsocial-curator-ai-news.workers.dev/health`

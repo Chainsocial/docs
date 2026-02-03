@@ -1,0 +1,20 @@
+# Security
+
+Curator runs as a public worker, so access control and secret handling matter.
+
+## Manual trigger authentication
+
+- Use `CURATOR_API_KEY` for `/run` and send `Authorization: Bearer <key>`.
+- Cloudflare Access can protect `/run` using `CF-Access-JWT-Assertion`.
+- Set `ENFORCE_ACCESS_JWT=true` to verify Access JWTs against JWKS.
+- In development, set `ENVIRONMENT=development` to allow unauthenticated `/run` for local testing.
+
+## Secrets and sensitive files
+
+- Store secrets with `npx wrangler secret put`.
+- Never commit `packages/curator/.wallets.json` or `packages/curator/.api-keys.txt`.
+- Keep per-persona private keys isolated.
+
+## Data isolation
+
+Enable `CURATOR_SCOPED_KEYS=true` to prevent KV collisions between personas, chains, or environments.

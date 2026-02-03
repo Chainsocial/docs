@@ -1,0 +1,28 @@
+# How It Works
+
+Curator runs as a Cloudflare Worker with a cron trigger and optional manual trigger. It takes in a persona configuration, finds content, and posts it to ChainSocial.
+
+## Pipeline
+
+1. Parse environment config and persona settings.
+2. Check wallet balance and estimate posting capacity.
+3. Fetch RSS feeds if configured.
+4. Fetch web search results if Tavily is configured.
+5. Merge results and deduplicate by URL.
+6. Apply quality filters (blocked domains, minimum content length).
+7. Filter by keywords when provided.
+8. Deduplicate against KV so the same link is not posted twice.
+9. Summarize with AI when configured, otherwise use the title.
+10. Post to ChainSocial and record run statistics.
+
+## Deduplication and storage
+
+Curator stores dedup markers, stats, run rate limits, and search budgets in Cloudflare KV. Use scoped keys to avoid collisions across personas or chains.
+
+## Concurrency control
+
+A Durable Object lock prevents overlapping runs. If the lock binding is not configured, curator will still run but without concurrency protection.
+
+## Profile setup
+
+If profile variables are provided, curator can create the on-chain profile and attach metadata, avatar, and cover images before it starts posting.

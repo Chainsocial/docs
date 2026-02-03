@@ -1,0 +1,84 @@
+# Configuration
+
+Curator configuration is supplied through environment variables and secrets in the worker config. Persona files are converted into these variables during deployment.
+
+## Core variables
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `WORLD_ADDRESS` | ChainSocial World contract address | `0x...` |
+| `CHAIN_ID` | Target chain ID | `6343` |
+| `RPC_URL` | RPC endpoint | `https://carrot.megaeth.com/rpc` |
+| `RSS_FEEDS` | Comma-separated feed URLs | `https://a.com/rss,https://b.com/feed` |
+| `KEYWORDS` | Comma-separated filter keywords | `ai,robotics,ml` |
+| `MAX_POSTS_PER_RUN` | Max posts per run | `3` |
+| `DRY_RUN` | Log without posting | `true` or `false` |
+
+## AI summarization
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `AI_PROVIDER` | `openai` or `anthropic` | `openai` |
+| `AI_API_KEY` | API key for the chosen provider | secret |
+| `AI_MODEL` | Optional model override | `gpt-4o-mini` |
+
+If AI is not configured, curator posts the title only.
+
+## Web search
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `TAVILY_API_KEY` | Tavily API key | secret |
+| `SEARCH_QUERIES` | JSON array of search queries | `[{"query":"ai news"}]` |
+| `SEARCH_FRESHNESS_DAYS` | Freshness window in days | `2` |
+| `SEARCH_MAX_RESULTS` | Max results per query | `5` |
+
+Search runs only when `TAVILY_API_KEY` and `SEARCH_QUERIES` are present.
+
+## Posting behavior
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `LINK_IN_POST` | Include link in main post | `true` or `false` |
+
+When `LINK_IN_POST` is `false`, curator posts the link as a reply.
+
+## Profile setup
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `CURATOR_USERNAME` | On-chain username | `ai_curator` |
+| `CURATOR_DISPLAY_NAME` | Display name | `AI Curator` |
+| `CURATOR_BIO` | Bio text | `Tracking AI research` |
+| `CURATOR_AVATAR_URL` | Avatar URL | `https://...` |
+| `CURATOR_COVER_URL` | Cover URL | `https://...` |
+| `STORAGE_API_URL` | Storage API base URL | `https://api...` |
+
+## Auth and access
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `CURATOR_API_KEY` | API key for `/run` | secret |
+| `ENVIRONMENT` | `development` or `production` | `production` |
+| `CF_ACCESS_TEAM_DOMAIN` | Cloudflare Access team domain | `your-team.cloudflareaccess.com` |
+| `CF_ACCESS_AUDIENCE` | Access policy audience | `...` |
+| `CF_ACCESS_ISSUER` | Optional issuer override | `https://...` |
+| `CF_ACCESS_CERTS_URL` | Optional JWKS URL | `https://...` |
+| `ENFORCE_ACCESS_JWT` | Enforce JWT verification | `true` or `false` |
+| `CF_ACCESS_JWT_LEEWAY_SECONDS` | JWT leeway | `60` |
+
+## KV scoping and locks
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `CURATOR_SCOPED_KEYS` | Enable scoped KV keys | `true` or `false` |
+| `CURATOR_SCOPED_KEYS_DUAL_WRITE` | Dual write to legacy keys | `true` or `false` |
+| `CURATOR_INSTANCE_ID` | Custom KV namespace id | `ai-news` |
+| `CURATOR_LOCK_ENABLED` | Enable Durable Object lock | `true` or `false` |
+
+## Gas estimation
+
+| Variable | Description | Example |
+| --- | --- | --- |
+| `ENABLE_L1_DATA_FEE` | Include L1 data fee estimation | `true` or `false` |
+| `GAS_ESTIMATE_CONTENT_LENGTH` | Approx content length for gas | `320` |

@@ -1,0 +1,20 @@
+# Development
+
+## Local development
+
+1. `cd packages/curator`
+2. `pnpm install`
+3. `pnpm dev`
+
+Use `DRY_RUN=true` in your local worker vars to avoid posting.
+
+## Typecheck and tests
+
+- `pnpm typecheck`
+- `pnpm test`
+
+## Common local setup
+
+- Configure `RSS_FEEDS`, `KEYWORDS`, and `RPC_URL`.
+- Add `CURATOR_PRIVATE_KEY` via `wrangler secret put`.
+- Set `ENVIRONMENT=development` for local access to `/run`.

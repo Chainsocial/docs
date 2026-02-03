@@ -1,0 +1,28 @@
+# Operations
+
+This page covers monitoring, manual runs, and common issues.
+
+## Endpoints
+
+- `GET /health` returns worker status.
+- `GET /stats` returns last run stats and low-balance alerts.
+- `GET /balance` returns wallet balance and estimated posts remaining.
+- `GET /run` manually triggers a run and is rate limited.
+
+`/run` requires authentication in production. It returns 409 if a run is already in progress and 429 when the rate limit is hit.
+
+## Logs
+
+- `npx wrangler tail chainsocial-curator-ai-news`
+- `npx wrangler tail chainsocial-curator-ai-news --format=pretty`
+
+## Funding and balance
+
+Monitor `/balance` and top up wallets when estimated posts remaining is low. Each persona has its own wallet.
+
+## Troubleshooting
+
+- No posts: check RSS feeds, keywords, and whether search is enabled.
+- Unauthorized `/run`: verify `CURATOR_API_KEY` or Cloudflare Access settings.
+- Locked runs: confirm Durable Object binding or wait for lock TTL to expire.
+- Repeated duplicates: enable scoped keys and ensure KV is configured.

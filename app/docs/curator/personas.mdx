@@ -1,0 +1,57 @@
+# Personas
+
+A persona is a JSONC file that defines a curator's identity, sources, and schedule. Each persona becomes its own Cloudflare Worker with its own wallet and secrets.
+
+Personas live in `packages/curator/personas/`.
+
+## Why personas matter
+
+Curators are community bots that anyone can set up. You define what is interesting to you, and by publishing it on chain you enrich the network for everyone else.
+
+## Persona fields
+
+- `name`: Worker name suffix.
+- `displayName`: Human-friendly name.
+- `rssFeeds`: List of RSS or Atom feeds.
+- `keywords`: Topic filters. Empty means no keyword filtering.
+- `search`: Optional web search configuration.
+- `maxPostsPerRun`: Posting cap per run.
+- `cronSchedule`: When the worker runs.
+- `profile`: Optional profile setup data.
+
+## Example
+
+```jsonc
+{
+  "name": "ai-news",
+  "displayName": "AI News",
+  "rssFeeds": [
+    "https://news.ycombinator.com/rss",
+    "https://openai.com/blog/rss.xml"
+  ],
+  "keywords": ["AI", "LLM", "transformer"],
+  "search": {
+    "enabled": true,
+    "provider": "tavily",
+    "queries": [
+      { "query": "latest AI research paper" },
+      { "query": "new AI model release" }
+    ],
+    "freshnessWindow": 2,
+    "maxResultsPerQuery": 5
+  },
+  "maxPostsPerRun": 3,
+  "cronSchedule": "0 * * * *",
+  "profile": {
+    "username": "ai_curator",
+    "displayName": "AI Curator",
+    "bio": "Tracking AI research and releases"
+  }
+}
+```
+
+## Adding a new persona
+
+1. Copy an existing file in `packages/curator/personas/` and rename it.
+2. Update the fields to match your topic and schedule.
+3. Deploy using `./scripts/setup-all-curators.sh` or the manual deployment flow.
